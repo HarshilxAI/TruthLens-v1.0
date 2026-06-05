@@ -1,0 +1,17 @@
+fake-image-detector/
+│
+├── app.py
+├── requirements.txt
+│
+├── static/
+│   ├── uploads/
+│   ├── outputs/
+│   └── style.css
+│
+├── templates/
+│   └── index.html
+│
+└── utils/
+    ├── ela.py
+    ├── fft.py
+    └── gradcam.py (later)

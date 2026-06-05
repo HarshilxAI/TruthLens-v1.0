@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+
+fake_image_model.h5
+*.h5
+
+datasets/
+reports/
+
+static/uploads/
+static/outputs/

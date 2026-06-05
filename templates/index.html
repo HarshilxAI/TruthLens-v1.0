@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TruthLens AI</title>
+    <link rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/TruthLens AI Icon.png') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <script defer
+            src="{{ url_for('static', filename='dashboard.js') }}">
+    </script>
+</head>
+
+<body>
+
+    <!-- Background -->
+    <div class="background-blur"></div>
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-badge">
+            AI Forensics Platform
+        </div>
+
+        <h1>
+            TruthLens AI
+        </h1>
+
+        <p class="hero-subtitle">
+            Advanced Image Forensics & Manipulation Detection Platform
+        </p>
+
+        <p class="hero-description">
+            Detect edited and manipulated images using
+            Explainable Artificial Intelligence, Error Level Analysis,
+            FFT Frequency Analysis and Grad-CAM Visual Explanations.
+        </p>
+
+    </section>
+
+    <!-- UPLOAD -->
+
+    <section class="upload-section">
+
+        <form action="/upload"
+              method="post"
+              enctype="multipart/form-data">
+
+            <!-- Preview -->
+
+            <div class="upload-preview">
+
+    <img id="previewImage"
+         src=""
+         alt="Preview">
+
+</div>
+
+            <!-- Upload -->
+
+            <label class="upload-card">
+
+                <input type="file"
+                       name="image"
+                       id="imageInput"
+                       required
+                       hidden>
+
+                <div class="upload-content">
+
+    <div class="upload-preview">
+
+        <img id="previewImage"
+             src=""
+             alt="Preview">
+
+    </div>
+
+    <div class="upload-icon">
+        📷
+    </div>
+
+    <h2>
+        Upload Image
+    </h2>
+
+    <p>
+        Drag & Drop or Click To Upload
+    </p>
+
+</div>
+
+            </label>
+
+            <button type="submit"
+                    class="analyze-btn">
+
+                Analyze Image
+
+            </button>
+
+        </form>
+
+    </section>
+
+    {% if prediction %}
+
+    <!-- DASHBOARD -->
+
+    <section class="dashboard">
+
+        <!-- Prediction -->
+
+        <div class="dashboard-card">
+
+            <div class="card-label">
+                Prediction
+            </div>
+
+            <div class="prediction-text
+                {% if prediction == 'Real' %}
+                    real
+                {% else %}
+                    fake
+                {% endif %}
+            ">
+                {{ prediction }}
+            </div>
+
+        </div>
+
+        <!-- Confidence -->
+
+        <div class="dashboard-card">
+
+            <div class="card-label">
+                Confidence
+            </div>
+
+            <div class="confidence-circle">
+
+                <svg>
+
+                    <circle
+                        cx="60"
+                        cy="60"
+                        r="50">
+                    </circle>
+
+                    <circle
+                        cx="60"
+                        cy="60"
+                        r="50"
+                        class="progress-circle"
+                        data-confidence="{{ confidence }}">
+                    </circle>
+
+                </svg>
+
+                
+                <div class="confidence-text">
+
+                    {{ confidence }}%
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Risk -->
+
+        <div class="dashboard-card">
+
+            <div class="card-label">
+                Risk Level
+            </div>
+
+            {% if prediction == "Fake" %}
+
+            <div class="risk high-risk">
+
+                HIGH
+
+            </div>
+
+            {% else %}
+
+            <div class="risk low-risk">
+
+                LOW
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+    <div class="dashboard-card">
+
+    <div class="card-label">
+        Risk Score
+    </div>
+
+    <div class="risk-score">
+
+        {{ risk_score }}/100
+
+    </div>
+
+</div>
+
+    <!-- SUMMARY -->
+
+    <section class="summary-card">
+
+        <h2>
+            AI Analysis Summary
+        </h2>
+
+        {% if prediction == "Fake" %}
+
+        <ul>
+
+            <li>
+                Error Level Analysis indicates unusual image artifacts.
+            </li>
+
+            <li>
+                FFT analysis suggests abnormal frequency patterns.
+            </li>
+
+            <li>
+                Grad-CAM highlights suspicious visual regions.
+            </li>
+
+            <li>
+                The image contains characteristics associated with
+                AI generation or manipulation.
+            </li>
+
+        </ul>
+
+        {% else %}
+
+        <ul>
+
+            <li>
+                Compression artifacts appear natural and consistent.
+            </li>
+
+            <li>
+                FFT distribution aligns with authentic photography.
+            </li>
+
+            <li>
+                Grad-CAM attention appears evenly distributed.
+            </li>
+
+            <li>
+                No strong signs of manipulation detected.
+            </li>
+
+        </ul>
+
+        {% endif %}
+
+    </section>
+
+    <!-- FORENSICS GRID -->
+
+    <section class="analysis-grid">
+
+        {% if uploaded_image %}
+        <div class="analysis-card">
+
+            <h3>Original Image</h3>
+
+            <img src="{{ uploaded_image }}"
+                 class="analysis-image">
+
+        </div>
+        {% endif %}
+
+        {% if ela_image %}
+        <div class="analysis-card">
+
+            <h3>ELA Analysis</h3>
+
+            <img src="{{ ela_image }}"
+                 class="analysis-image">
+
+        </div>
+        {% endif %}
+
+        
+
+        {% if fft_image %}
+        <div class="analysis-card">
+
+            <h3>FFT Analysis</h3>
+
+            <img src="{{ fft_image }}"
+                 class="analysis-image">
+
+        </div>
+        {% endif %}
+
+        {% if gradcam_image %}
+        <div class="analysis-card">
+
+            <h3>Grad-CAM</h3>
+
+            <img src="{{ gradcam_image }}"
+                 class="analysis-image">
+
+        </div>
+        {% endif %}
+
+    </section>
+
+    <!-- REPORT -->
+
+    <section class="report-section">
+
+        <button class="report-btn">
+
+            Generate Forensics Report
+
+        </button>
+
+    </section>
+
+    {% endif %}
+
+    <!-- IMAGE MODAL -->
+
+    <div id="imageModal"
+         class="modal">
+
+        <span class="close-modal">
+            &times;
+        </span>
+
+        <img id="modalImage"
+             class="modal-content">
+
+    </div>
+
+</body>
+
+</html>
